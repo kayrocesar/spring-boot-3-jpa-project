@@ -14,12 +14,12 @@ public enum OrderStatus {
 		return code;
 	}
 
-	public static OrderStatus valueOf(int code) throws IllegalAccessException  {
+	public static OrderStatus valueOf(int code) {
 		for (OrderStatus status : OrderStatus.values()) {
 			if (status.getCode() == code) {
 				return status;
 			}
 		}
-		throw new IllegalAccessException("Invalid OrderStatus code");
+		throw new IllegalArgumentException("Invalid OrderStatus code");
 	}
 }
