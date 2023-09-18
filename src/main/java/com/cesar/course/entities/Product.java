@@ -5,10 +5,15 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.hibernate.annotations.ManyToAny;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -27,7 +32,10 @@ public class Product implements Serializable{
 	private Double price;
 	private String imgUrl;
 	
-	@Transient
+	@ManyToMany
+	@JoinTable(name = "tb_product_category",
+	joinColumns = @JoinColumn(name="product_id"),
+	inverseJoinColumns = @JoinColumn(name="category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
 	public Product () {
@@ -84,11 +92,17 @@ public class Product implements Serializable{
 		this.imgUrl = imgUrl;
 	}
 
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
